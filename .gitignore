@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# vim undo files
+*.un~
+
+# cython tmp source file
+gaze_ocr/tobii4c/etpy.cpp
