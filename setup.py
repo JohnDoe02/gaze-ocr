@@ -31,6 +31,6 @@ setuptools.setup(
         Extension("etpy", ["gaze_ocr/tobii4c/etpy.pyx"],
                   library_dirs=["/usr/lib/tobii/"],
                   libraries=["tobii_stream_engine"]),
-                  extra_compile_args=["-std=c++17"]
+#                  extra_compile_args=["-std=c++17"]
         ])
 )

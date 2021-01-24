@@ -24,7 +24,7 @@ void EyeTracker::url_receiver(char const *url, void *user_data) {
 
 EyeTracker::EyeTracker()
 {
-  tobii_error_t error = tobii_api_create(&api, NULL, NULL);
+  error = tobii_api_create(&api, NULL, NULL);
   assert(error == TOBII_ERROR_NO_ERROR);
 
   char url[256] = {0};
