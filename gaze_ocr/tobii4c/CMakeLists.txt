@@ -12,7 +12,7 @@ link_directories(/usr/lib/tobii/)
 
 # Create a library called "Hello" which includes the source file "hello.cxx".
 # The extension is already found. Any number of sources could be listed here.
-add_library (eyetracker SHARED eyetracker.cpp)
+add_library(eyetracker eyetracker.cpp)
 add_library(tobii_stream_engine SHARED IMPORTED)
 set_property(TARGET tobii_stream_engine PROPERTY IMPORTED_LOCATION "/usr/lib/tobii/libtobii_stream_engine.so")
 target_link_libraries(eyetracker tobii_stream_engine)

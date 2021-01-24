@@ -1,4 +1,6 @@
 import setuptools
+from distutils.extension import Extension
+from Cython.Build import cythonize
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -16,7 +18,7 @@ setuptools.setup(
     install_requires=[
         "screen-ocr",
         "dragonfly2",
-        "pythonnet",
+        "cython",
         'futures; python_version < "3.2"',
     ],
     classifiers=[
@@ -25,4 +27,10 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
     ],
+    ext_modules = cythonize([
+        Extension("etpy", ["gaze_ocr/tobii4c/etpy.pyx"],
+                  library_dirs=["/usr/lib/tobii/"],
+                  libraries=["tobii_stream_engine"]),
+                  extra_compile_args=["-std=c++17"]
+        ])
 )
