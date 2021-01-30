@@ -1,6 +1,7 @@
 """Tobii eye tracker wrapper."""
 
 import sys
+import etpy
 
 from . import _dragonfly_wrappers as dragonfly_wrappers
 
@@ -44,6 +45,7 @@ class EyeTracker(object):
         self._screen_scale = (1.0, 1.0)
         self._head_rotation = None
         self.is_connected = False
+        self.tobii4c = etpy.Tobii4c()
 
     def connect(self):
         if self.is_mock:
@@ -103,9 +105,12 @@ class EyeTracker(object):
                 self._gaze_point)
 
     def get_gaze_point_or_default(self):
-        if self.has_gaze_point():
-            return (self._gaze_point[0] * self._screen_scale[0],
-                    self._gaze_point[1] * self._screen_scale[1])
+        self._gaze_point = self.tobii4c.update()
+        print("gaze point x: ", self._gaze_point[0])
+        print("gaze point y: ", self._gaze_point[1])
+        if self.has_gaze_point() or True:
+            return (1920 + self._gaze_point[0] * self._screen_scale[0] * 1920,
+                    self._gaze_point[1] * self._screen_scale[1] * 1200)
         else:
             return self._windows.get_foreground_window_center()
 
