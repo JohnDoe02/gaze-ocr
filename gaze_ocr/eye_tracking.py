@@ -105,7 +105,7 @@ class EyeTracker(object):
                 self._gaze_point)
 
     def get_gaze_point_or_default(self):
-        self._gaze_point = self.tobii4c.update()
+        self._gaze_point = self.tobii4c.getGaze()
         print("gaze point x: ", self._gaze_point[0])
         print("gaze point y: ", self._gaze_point[1])
         if self.has_gaze_point() or True:
