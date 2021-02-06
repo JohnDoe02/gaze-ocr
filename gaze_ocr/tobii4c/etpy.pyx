@@ -14,23 +14,18 @@ cdef extern from "eyetracker.cpp":
 
 cdef class Tobii4c:
     cdef EyeTracker* c_et
-    cdef _gazeX
-    cdef _gazeY
+    cdef _gazeX, _gazeY
     cdef _threaded_update
     cdef _exit_flag
     cdef _lock
 
-    def __init__(self):
-        self._gazeX = 0.0
-        self._gazeY = 0.0
+    def __cinit__(self):
+        self.c_et = new EyeTracker()
 
         self._exit_flag = threading.Event()
         self._lock = threading.Lock()
         self._threaded_update = threading.Thread(target=self.__update, args=())
         self._threaded_update.start()
-
-    def __cinit__(self):
-        self.c_et = new EyeTracker()
 
     def __dealloc__(self):
         self._exit_flag.set()
