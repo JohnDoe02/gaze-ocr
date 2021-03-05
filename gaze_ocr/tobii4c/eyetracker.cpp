@@ -25,36 +25,45 @@ void EyeTracker::url_receiver(char const *url, void *user_data) {
 EyeTracker::EyeTracker()
 {
   error = tobii_api_create(&api, NULL, NULL);
-  assert(error == TOBII_ERROR_NO_ERROR);
+  if(error != TOBII_ERROR_NO_ERROR)
+    return;
 
   char url[256] = {0};
   error = tobii_enumerate_local_device_urls(api, url_receiver, url);
-  assert(error == TOBII_ERROR_NO_ERROR && *url != '\0');
+  if(error != TOBII_ERROR_NO_ERROR)
+    return;
 
   error = tobii_device_create(api, url, &device);
-  assert(error == TOBII_ERROR_NO_ERROR);
+  if(error != TOBII_ERROR_NO_ERROR)
+    return;
 
   error = tobii_gaze_point_subscribe(device, gaze_point_callback, (void*) this);
-  assert(error == TOBII_ERROR_NO_ERROR);
+  if(error != TOBII_ERROR_NO_ERROR)
+    return;
 }
 EyeTracker::~EyeTracker()
 {
   error = tobii_gaze_point_unsubscribe(device);
-  assert(error == TOBII_ERROR_NO_ERROR);
+  if(error != TOBII_ERROR_NO_ERROR)
+    return;
 
   error = tobii_device_destroy(device);
-  assert(error == TOBII_ERROR_NO_ERROR);
+  if(error != TOBII_ERROR_NO_ERROR)
+    return;
 
   error = tobii_api_destroy(api);
-  assert(error == TOBII_ERROR_NO_ERROR);
+  if(error != TOBII_ERROR_NO_ERROR)
+    return;
 }
 std::pair<float, float> EyeTracker::update()
 {
     error = tobii_wait_for_callbacks(1, &device);
-    assert(error == TOBII_ERROR_NO_ERROR || error == TOBII_ERROR_TIMED_OUT);
+    if(error != TOBII_ERROR_NO_ERROR)
+      return {0.0, 0.0};
 
     error = tobii_device_process_callbacks(device);
-    assert(error == TOBII_ERROR_NO_ERROR);
+    if(error != TOBII_ERROR_NO_ERROR)
+      return {0.0, 0.0};
 
     return {gazeX, gazeY};
 }
